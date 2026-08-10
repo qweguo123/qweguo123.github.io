@@ -4,35 +4,146 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>游戏资源专区</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;color:#fff;font-family:system-ui;}
-body{background:#121212;padding:30px 15px;max-width:900px;margin:0 auto;}
-h1{text-align:center;color:#22c55e;margin-bottom:40px;}
-.item{background:#1e1e1e;padding:20px;border-radius:10px;margin-bottom:16px;border:1px solid #333;cursor:pointer;}
-.item:hover{border-color:#22c55e;}
-.back{display:block;text-align:center;margin-top:50px;color:#409eff;text-decoration:none;}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>游戏资源专区</h1>
-<div class="item" onclick="open('')">
-<h3>FeelFPV 穿越机模拟器</h3>
-<p>手机端FPV练手软件，附带网盘安装包</p>
+<div class="container">
+    <div class="top-avatar-box">
+        <img class="top-avatar" src="https://i1.hdslb.com/bfs/face/dfad9b020d793b4e0453a563dc292d140fce3e9e.jpg" alt="头像">
+    </div>
+
+    <h1>游戏资源专区</h1>
+
+    <h2 class="sub-title">下载工具</h2>
+    <div class="item" onclick="openGame('')">
+        <h3>全能资源下载器</h3>
+        <p>视频、音频、安装包直链解析下载，支持网盘直取</p>
+    </div>
+    <div class="item" onclick="openGame('')">
+        <h3>APK专用下载器</h3>
+        <p>海外APK站点高速拉取，无需魔法缓存安装包</p>
+    </div>
+
+    <h2 class="sub-title">影视在线观看</h2>
+    <div class="item" onclick="openGame('')">
+        <h3>高清影视总站</h3>
+        <p>电影、剧集、动漫无广告高清在线播放</p>
+    </div>
+    <div class="item" onclick="openGame('')">
+        <h3>番剧专用频道</h3>
+        <p>全网动漫实时更新，原画倍速播放</p>
+    </div>
+
+    <h2 class="sub-title">游戏合集</h2>
+    <div class="item" onclick="openGame('https://captain-droid.com/zh/games/simulator/feelfpv-drone-fpv-simulator/')">
+        <h3>FeelFPV 穿越机模拟器</h3>
+        <p>触屏/键鼠自由切换，建模精细度+视距自定义，多语言，手机电脑通用，附带网盘安装包</p>
+    </div>
+    <div class="item" onclick="openGame('')">
+        <h3>FPV Freerider</h3>
+        <p>支持触屏、键盘、手柄三操控，画质建模、视距均可调，内置多国语言包</p>
+    </div>
+    <div class="item" onclick="openGame('')">
+        <h3>我的世界 手机模组整合</h3>
+        <p>手机触屏、电脑键鼠分开适配，建模、视距、语言均可手动设置</p>
+    </div>
+
+    <div class="item" onclick="openGame('https://dinogame.gg')">
+        <h3>谷歌小恐龙</h3>
+        <p>手机点击跳跃，电脑空格跳跃，加载后本地缓存离线玩</p>
+    </div>
+    <div class="item" onclick="openGame('https://sharaj.pages.dev/')">
+        <h3>Open Roads公路驾驶</h3>
+        <p>开局可选触屏摇杆/键盘方向键，5种视角+视距手动拉远拉近，建模三档可调，四季天气，五国语言，双端操控自选</p>
+    </div>
+    <div class="item" onclick="openGame('https://plantsvszombiesjs.github.io')">
+        <h3>植物大战僵尸</h3>
+        <p>触屏拖拽/鼠标拖拽，两种操控随意使用，多语言切换</p>
+    </div>
+    <div class="item" onclick="openGame('https://chrome.angrybirds.com')">
+        <h3>愤怒的小鸟</h3>
+        <p>拖拽操控，手机触屏、电脑鼠标通用自由选，官方原版支持双端缓存</p>
+    </div>
+
+    <div class="item" onclick="openGame('https://crazygames-poki.com/zh-cn/racing/city-car-driving-simulator')">
+        <h3>城市汽车驾驶模拟器</h3>
+        <p>开局自选触屏按键/WASD键鼠，固定5套视角、视距自由拉伸，建模精简/标准/精细三档，四季雨雪天气，多国语言切换</p>
+    </div>
+    <div class="item" onclick="openGame('https://freetoolonline.com/games/city-drive-3d.html')">
+        <h3>都市开放飙车3D</h3>
+        <p>5套固定视角，视距远近可调，建模精度手动切换，春夏秋冬+雨雪雾，多语言，支持下车步行</p>
+    </div>
+
+    <div class="item" onclick="openGame('https://drive-mad.co/18-wheeler-cargo-simulator/')">
+        <h3>百吨王·18轮半挂</h3>
+        <p>多款重型车头+可拆卸长挂车，5视角一键切换、视距自定义，三档建模，四季道路积雪场景，晴雨雾天气，触屏键盘双操控</p>
+    </div>
+    <div class="item" onclick="openGame('https://puzzio.io/game/truck-simulator-european-roads')">
+        <h3>欧洲城市卡车运输</h3>
+        <p>奔驰斯堪尼亚百吨重卡，5类镜头、视距缩放，精细车辆建模，四季城市风景，多语言，挂车倒车实操</p>
+    </div>
+
+    <div class="item" onclick="openGame('https://trucksimulatorweather.com')">
+        <h3>重卡天气货运模拟器</h3>
+        <p>百吨王长短半挂齐全，5视角+可调视距，三档建模，晴/暴雨/大雾/黑夜，多国语言，双端离线缓存</p>
+    </div>
+    <div class="item" onclick="openGame('https://citydriveweather.fun')">
+        <h3>城市全天候驾车</h3>
+        <p>全品类轿车大巴，5种镜头、视距自由调整，建模档位可选，雨雪阴天，手机电脑通用</p>
+    </div>
+
+    <div class="item" onclick="openGame('https://truck-season-sim.xyz')">
+        <h3>四季重卡货运模拟器</h3>
+        <p>半挂百吨全覆盖，5视角一键切换，视距远近自定义，三档车辆/场景建模，春夏秋冬+雨雪叠加，中英日韩西五国语言，触屏键鼠任选</p>
+    </div>
+    <div class="item" onclick="openGame('https://city-season-drive.online')">
+        <h3>都市四季公路驾驶</h3>
+        <p>跑车/家用/巴士全载具，5套固定镜头，视距拉放自由，高精度建模可选，四季植被变化，天气叠加，多语言切换操控</p>
+    </div>
+
+    <div class="item" onclick="openGame('https://rabiroshan.github.io/snake_game/')">
+        <h3>经典贪吃蛇</h3>
+        <p>触屏滑动、键盘方向键，随时都能切换，多语言</p>
+    </div>
+    <div class="item" onclick="openGame('https://tetris.com/play-tetris')">
+        <h3>俄罗斯方块</h3>
+        <p>触屏点击/键盘按键，多难度，多语言存档本地保存</p>
+    </div>
+    <div class="item" onclick="openGame('https://passer-by.com/pacman/')">
+        <h3>吃豆人</h3>
+        <p>触屏滑动、键盘操控，街机原版多语言复刻</p>
+    </div>
+    <div class="item" onclick="openGame('https://play2048.co/')">
+        <h3>2048数字合成</h3>
+        <p>手机滑动、电脑按键，自动记录分数，多语言</p>
+    </div>
+    <div class="item" onclick="openGame('https://bodhiprotocol.github.io/whack-a-mole/')">
+        <h3>打地鼠</h3>
+        <p>分儿童困难模式，无广告，多语言离线缓存</p>
+    </div>
+    <div class="item" onclick="openGame('http://martindrapeau.github.io/backbone-game-engine/super-mario-bros/index.html')">
+        <h3>超级马里奥</h3>
+        <p>虚拟触屏/电脑键盘手柄，开局自选语言</p>
+    </div>
+    <div class="item" onclick="openGame('https://minesweeper.online/zh/')">
+        <h3>经典扫雷</h3>
+        <p>触屏鼠标通用，多难度多语言</p>
+    </div>
+    <div class="item" onclick="openGame('https://goldminerjs.github.io')">
+        <h3>黄金矿工</h3>
+        <p>一键操控，手机电脑通用，自带多语言</p>
+    </div>
+
+    <a class="back" href="game.html">返回主页</a>
+
+    <div class="bili-box">
+        <a class="bili-link" target="_blank" href="https://space.bilibili.com/3546737830529382?spm_id_from=333.337.0.0">
+            <img class="bili-avatar" src="https://i1.hdslb.com/bfs/face/dfad9b020d793b4e0453a563dc292d140fce3e9e.jpg" alt="B站头像">
+            前往我的B站主页
+        </a>
+    </div>
 </div>
-<div class="item" onclick="open('')">
-<h3>FPV Freerider</h3>
-<p>老牌低成本模拟器，适配手柄</p>
-</div>
-<div class="item" onclick="open('')">
-<h3>我的世界 手机模组整合</h3>
-<p>视距优化、渲染模组兼容包</p>
-</div>
-<a class="back" href="index.html">返回主页</a>
-<script>
-function open(link){
-    if(!link) alert("资源链接正在上传，稍后更新");
-    else window.open(link);
-}
-</script>
+
+<script src="main.js"></script>
 </body>
 </html>

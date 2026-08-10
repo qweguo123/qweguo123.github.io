@@ -1,0 +1,76 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #fff;
+    font-family: system-ui;
+}
+body{
+    background: #121212;
+}
+.container{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 15px;
+}
+.top-avatar-box{
+    text-align: center;
+    margin-bottom: 20px;
+}
+.top-avatar{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px #22c55e solid;
+}
+h1{
+    text-align: center;
+    color: #22c55e;
+    margin-bottom: 40px;
+}
+.sub-title{
+    margin: 30px 0 15px;
+    color:#94e399;
+    font-size:18px;
+}
+.item{
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #333;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+.item:hover{
+    border-color: #22c55e;
+}
+.back{
+    display: block;
+    text-align: center;
+    margin-top: 50px;
+    color: #409eff;
+    text-decoration: none;
+}
+.bili-box{
+    margin-top: 60px;
+    text-align: center;
+}
+.bili-link{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 26px;
+    background: #fb7299;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 16px;
+}
+.bili-avatar{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px #fff solid;
+}
