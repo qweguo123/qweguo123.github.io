@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员后台</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui;}
+        body{background:#111;color:#fff;padding:30px;}
+        .box{max-width:460px;margin:40px auto;background:#1e1e1e;padding:32px;border-radius:14px;}
+        input{width:100%;padding:12px 14px;margin:10px 0;background:#292929;border:1px solid #444;color:#fff;border-radius:8px;outline:none;font-size:15px;}
+        button{width:100%;padding:13px;background:#409eff;border:0;color:#fff;border-radius:8px;cursor:pointer;font-size:15px;margin-top:8px;}
+        .mini-btn{background:#333;}
+        .forget-btn{background:none;color:#409eff;border:none;margin-top:6px;text-align:right;cursor:pointer;padding:0;}
+        .back{color:#409eff;margin-top:16px;text-align:center;display:block;text-decoration:none;font-size:14px;}
+        .area{display:none;margin-top:20px;}
+        .item{display:flex;gap:8px;margin:6px 0;align-items:center;}
+    </style>
+</head>
+<body>
+<div class="box">
+    <h2>管理员登录</h2>
+    <div id="loginBox">
+        <input id="user" placeholder="用户名" autocomplete="off">
+        <input id="pwd" placeholder="密码" type="password" autocomplete="new-password">
+        <button onclick="loginCheck()">登录后台</button>
+        <button class="forget-btn" onclick="showFind()">忘记密码？</button>
+    </div>
+
+    <div id="findBox" class="area">
+        <p>密保问题：你是谁？</p>
+        <input id="answer" placeholder="输入密保答案" autocomplete="off">
+        <button onclick="checkAnswer()">验证并重置密码</button>
+        <button class="forget-btn" onclick="backLogin()">返回登录</button>
+    </div>
+
+    <div id="managePanel" class="area">
+        <h3>网站设置修改（仅管理员可用）</h3>
+        <input id="title" placeholder="站点标题" autocomplete="off">
+        <input id="desc" placeholder="站点简介" autocomplete="off">
+        <input id="biliUrl" placeholder="B站主页链接" autocomplete="off">
+        <button onclick="saveBase()">保存基础设置</button>
+
+        <h3 style="margin-top:20px">新增网页卡片</h3>
+        <input id="cardName" placeholder="卡片名称" autocomplete="off">
+        <input id="cardLink" placeholder="跳转网址" autocomplete="off">
+        <button onclick="addCard()">添加卡片</button>
+
+        <h3 style="margin-top:20px">已有自定义卡片</h3>
+        <div id="cardList"></div>
+    </div>
+
+    <a href="index.html" class="back">返回首页</a>
+</div>
+
+<script>
+const adminUser = "1145149527";
+let adminPwd = "qqqhhhppp";
+const securityAnswer = "114514awa";
+
+let webSet = JSON.parse(localStorage.getItem("webSet")) || {title:"我进不去你的空间",desc:"影视｜游戏｜高速下载 资源合集主页",bili:"",cards:[]};
+
+function loginCheck(){
+    let u = document.getElementById("user").value;
+    let p = document.getElementById("pwd").value;
+    if(u === adminUser && p === adminPwd){
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("managePanel").style.display = "block";
+        loadData();
+    }else alert("账号或密码错误");
+}
+
+function showFind(){
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("findBox").style.display = "block";
+}
+function backLogin(){
+    document.getElementById("findBox").style.display = "none";
+    document.getElementById("loginBox").style.display = "block";
+}
+
+function checkAnswer(){
+    let ans = document.getElementById("answer").value.trim();
+    if(ans === securityAnswer){
+        let newP = prompt("验证通过，设置新密码");
+        if(newP && newP.trim()){
+            adminPwd = newP.trim();
+            alert("密码修改成功");
+        }
+    }else alert("答案错误");
+}
+
+function loadData(){
+    document.getElementById("title").value = webSet.title;
+    document.getElementById("desc").value = webSet.desc;
+    document.getElementById("biliUrl").value = webSet.bili;
+    renderCard();
+}
+
+function saveBase(){
+    webSet.title = document.getElementById("title").value;
+    webSet.desc = document.getElementById("desc").value;
+    webSet.bili = document.getElementById("biliUrl").value;
+    localStorage.setItem("webSet",JSON.stringify(webSet));
+    alert("基础设置保存成功，首页已更新");
+}
+
+function addCard(){
+    let n = document.getElementById("cardName").value.trim();
+    let l = document.getElementById("cardLink").value.trim();
+    if(!n||!l) return alert("名称和链接不能为空");
+    webSet.cards.push({name:n,link:l});
+    localStorage.setItem("webSet",JSON.stringify(webSet));
+    renderCard();
+    document.getElementById("cardName").value = "";
+    document.getElementById("cardLink").value = "";
+}
+
+function renderCard(){
+    let wrap = document.getElementById("cardList");
+    wrap.innerHTML = "";
+    webSet.cards.forEach((item,idx)=>{
+        let div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `<span>${item.name}</span><button class="mini-btn" onclick="delCard(${idx})">删除</button>`;
+        wrap.appendChild(div);
+    })
+}
+
+function delCard(i){
+    webSet.cards.splice(i,1);
+    localStorage.setItem("webSet",JSON.stringify(webSet));
+    renderCard();
+}
+</script>
+</body>
+</html>

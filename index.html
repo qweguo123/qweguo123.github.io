@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我进不去你的空间</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui;
+        }
+        body {
+            color: #fff;
+            padding: 30px 15px;
+            transition: background 0.6s ease;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap:12px;
+        }
+        .avatar{
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #fb7299;
+            object-fit: cover;
+        }
+        h1 {
+            color: #409eff;
+            margin-bottom: 10px;
+        }
+        .desc {
+            color: #aaa;
+        }
+        .visitor-tag{
+            font-size:13px;
+            color:#888;
+            margin-bottom:8px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: #1e1e1e;
+            padding: 22px;
+            border-radius: 12px;
+            transition: 0.25s;
+            cursor: pointer;
+            border: 1px solid #333;
+        }
+        .card:hover {
+            border-color: #409eff;
+            transform: translateY(-4px);
+        }
+        .card h3 {
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .card p {
+            font-size:14px;
+            color:#bbbbbb;
+            line-height:1.5;
+        }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+            font-size: 13px;
+        }
+        .game-card{border-color:#22c55e;}
+        .game-card:hover{border-color:#22c55e;}
+        .download-card{border-color:#f97316;}
+        .download-card:hover{border-color:#f97316;}
+        .bilibili-card{border-color:#fb7299;}
+        .bilibili-card:hover{border-color:#fb7299;}
+        .slow-card{border-color:#a855f7;}
+        .slow-card:hover{border-color:#a855f7;}
+
+        .admin-entrance{
+            position: fixed;
+            right: 8px;
+            bottom: 8px;
+            background: transparent;
+            border: none;
+            color: #222632;
+            font-size: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img class="avatar" src="此处粘贴你的B站头像链接" alt="头像">
+        <div class="visitor-tag">游客浏览模式 · 仅可访问链接，无修改权限</div>
+        <h1 id="siteTitle">我进不去你的空间</h1>
+        <p class="desc" id="siteDesc">影视｜游戏｜高速下载 资源合集主页</p>
+    </header>
+
+    <div class="container" id="cardBox">
+        <div class="card" onclick="openUrl('https://www.yangshipin.cn/')">
+            <h3>央视频</h3>
+            <p>央视官方，海量影视纪录片免费</p>
+        </div>
+        <div class="card" onclick="openUrl('https://www.1905.com/')">
+            <h3>1905电影网</h3>
+            <p>CCTV6官网，大量老电影免费观看</p>
+        </div>
+        <div class="card" onclick="openUrl('https://www.xuexi.cn/')">
+            <h3>学习强国</h3>
+            <p>零广告正版剧集、影视专区</p>
+        </div>
+        <div class="card" onclick="openUrl('https://www.bilibili.com/')">
+            <h3>B站首页</h3>
+            <p>免费正版电影、动漫、高分纪录片</p>
+        </div>
+        <div class="card" onclick="openUrl('https://www.ixigua.com/')">
+            <h3>西瓜视频</h3>
+            <p>大量完整版影视剧免费看</p>
+        </div>
+        <div class="card game-card" onclick="openUrl('#game')">
+            <h3>游戏资源专区</h3>
+            <p>我的世界、FPV模拟器下载集合</p>
+        </div>
+        <div class="card download-card" onclick="openUrl('https://gopeed.com/zh-CN/download')">
+            <h3>Gopeed高速下载器</h3>
+            <p>多线程提速，下载模组、资源必备工具</p>
+        </div>
+        <div class="card bilibili-card" id="biliCard" onclick="openUrl('')">
+            <h3>我的B站主页</h3>
+            <p>点击直达个人空间</p>
+        </div>
+        <div class="card slow-card" onclick="openUrl('https://slowroads.io')">
+            <h3>Slow Roads休闲开车</h3>
+            <p>无竞速无任务，风景公路解压驾驶网页游戏</p>
+        </div>
+    </div>
+
+    <button class="admin-entrance" id="clickBtn">·</button>
+    <footer></footer>
+
+<script>
+let clickCount = 0;
+const targetNum = 10;
+const btn = document.getElementById("clickBtn");
+btn.addEventListener("click",()=>{
+    clickCount++;
+    if(clickCount >= targetNum){
+        window.location.href = "admin.html";
+        clickCount = 0;
+    }
+});
+
+const bgList = [
+    "linear-gradient(135deg, #0f172a, #1e293b)",
+    "linear-gradient(135deg, #1a103d, #312e81)",
+    "linear-gradient(135deg, #142127, #0f3443)",
+    "linear-gradient(135deg, #27101b, #450a2a)",
+    "linear-gradient(135deg, #1c1917, #292524)",
+    "linear-gradient(135deg, #0c1222, #203562)"
+];
+document.body.style.background = bgList[Math.floor(Math.random() * bgList.length)];
+
+let set = JSON.parse(localStorage.getItem("webSet")) || {};
+if(set.title) document.getElementById("siteTitle").innerText = set.title;
+if(set.desc) document.getElementById("siteDesc").innerText = set.desc;
+if(set.bili) document.getElementById("biliCard").setAttribute("onclick",`openUrl('${set.bili}')`);
+
+if(Array.isArray(set.cards)){
+    const wrap = document.getElementById("cardBox");
+    set.cards.forEach(item=>{
+        let div = document.createElement("div");
+        div.className = "card";
+        div.onclick = ()=>openUrl(item.link);
+        div.innerHTML = `<h3>${item.name}</h3><p>自定义网页跳转</p>`;
+        wrap.appendChild(div);
+    })
+}
+
+if(url === "#game"){
+    window.open("game.html","_blank");
+    return;
+}
+
+    if(url && url !== "") window.open(url,"_blank");
+}
+</script>
+</body>
+</html>

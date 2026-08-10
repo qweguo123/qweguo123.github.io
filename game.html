@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>游戏资源专区</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;color:#fff;font-family:system-ui;}
+body{background:#121212;padding:30px 15px;max-width:900px;margin:0 auto;}
+h1{text-align:center;color:#22c55e;margin-bottom:40px;}
+.item{background:#1e1e1e;padding:20px;border-radius:10px;margin-bottom:16px;border:1px solid #333;cursor:pointer;}
+.item:hover{border-color:#22c55e;}
+.back{display:block;text-align:center;margin-top:50px;color:#409eff;text-decoration:none;}
+</style>
+</head>
+<body>
+<h1>游戏资源专区</h1>
+<div class="item" onclick="open('')">
+<h3>FeelFPV 穿越机模拟器</h3>
+<p>手机端FPV练手软件，附带网盘安装包</p>
+</div>
+<div class="item" onclick="open('')">
+<h3>FPV Freerider</h3>
+<p>老牌低成本模拟器，适配手柄</p>
+</div>
+<div class="item" onclick="open('')">
+<h3>我的世界 手机模组整合</h3>
+<p>视距优化、渲染模组兼容包</p>
+</div>
+<a class="back" href="index.html">返回主页</a>
+<script>
+function open(link){
+    if(!link) alert("资源链接正在上传，稍后更新");
+    else window.open(link);
+}
+</script>
+</body>
+</html>
