@@ -2,67 +2,126 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>游戏资源专区</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>自研游戏综合主页</title>
 <style>
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     color: #fff;
-    font-family: system-ui;
+    font-family: system-ui, -apple-system, sans-serif;
 }
 body{
     background: #121212;
+    transition: background 8s ease-in-out;
+    overflow-x: hidden;
+    min-height: 100vh;
 }
 .container{
-    max-width: 900px;
+    max-width: 920px;
     margin: 0 auto;
-    padding: 30px 15px;
+    padding: 28px 16px;
+    position: relative;
+    z-index: 1;
+}
+h1{
+    text-align: center;
+    color: #22c55e;
+    margin-bottom: 32px;
+    font-size: 24px;
+}
+.sub-title{
+    margin: 28px 0 12px;
+    color: #94e399;
+    font-size: 18px;
+    font-weight: 600;
+}
+.item{
+    background: #1e1e1e;
+    padding: 18px 20px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    border: 1px solid #333;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+.item.active{
+    border-color: #22c55e;
+    background: #1b2e1f;
+}
+.item:active{
+    transform: scale(0.98);
+}
+.item h3{
+    margin-bottom: 6px;
+    font-size: 16px;
+}
+.item p{
+    color: #aaa;
+    font-size: 14px;
+    line-height: 1.5;
+}
+#gameCanvas{
+    width: 100%;
+    height: 480px;
+    background: #87CEEB;
+    border-radius: 10px;
+    display: block;
+    touch-action: none;
+    margin-top: 8px;
+}
+.tip-bar{
+    margin: 10px 0 16px;
+    color: #888;
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.6;
+    background: #1a1a1a;
+    padding: 10px;
+    border-radius: 8px;
+}
+.game-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+.game-grid .item{
+    margin: 0;
+}
+.back-btn{
+    display: block;
+    text-align: center;
+    margin-top: 40px;
+    color: #409eff;
+    text-decoration: none;
+    font-size: 15px;
+}
+.score-panel{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0,0,0,0.6);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    display: none;
+    z-index: 10;
+}
+.canvas-wrap{
+    position: relative;
 }
 .top-avatar-box{
     text-align: center;
     margin-bottom: 20px;
 }
-.top-avatar{
+.avatar-img{
     width: 120px;
     height: 120px;
     border-radius: 50%;
+    border: 3px solid #22c55e;
     object-fit: cover;
-    border: 3px #22c55e solid;
-}
-h1{
-    text-align: center;
-    color: #22c55e;
-    margin-bottom: 40px;
-}
-.sub-title{
-    margin: 30px 0 15px;
-    color:#94e399;
-    font-size:18px;
-}
-.item{
-    background: #1e1e1e;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 16px;
-    border: 1px solid #333;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-.item:hover{
-    border-color: #22c55e;
-}
-.back{
-    display: block;
-    text-align: center;
-    margin-top: 50px;
-    color: #409eff;
-    text-decoration: none;
-}
-.bili-box{
-    margin-top: 60px;
-    text-align: center;
 }
 .bili-link{
     display: inline-flex;
@@ -72,162 +131,1054 @@ h1{
     background: #fb7299;
     border-radius: 10px;
     text-decoration: none;
+    color: #fff;
     font-size: 16px;
 }
 .bili-avatar{
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    object-fit: cover;
-    border: 2px #fff solid;
+    border: 2px solid #fff;
+}
+.bili-box{
+    margin-top: 60px;
+    text-align: center;
 }
 </style>
 </head>
 <body>
 <div class="container">
     <div class="top-avatar-box">
-        <img class="top-avatar" src="https://i1.hdslb.com/bfs/face/dfad9b020d793b4e0453a563dc292d140fce3e9e.jpg" alt="头像">
+        <!-- 内嵌SVG头像，无外部依赖，永久显示 -->
+        <svg class="avatar-img" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <rect width="120" height="120" fill="#666666"/>
+            <circle cx="60" cy="50" r="35" fill="none" stroke="#bbbbbb" stroke-width="4"/>
+            <circle cx="46" cy="42" r="6" fill="#bbbbbb"/>
+            <circle cx="74" cy="42" r="6" fill="#bbbbbb"/>
+            <path d="M40 58 Q60 78 80 58" fill="none" stroke="#bbbbbb" stroke-width="4" stroke-linecap="round"/>
+        </svg>
     </div>
 
-    <h1>游戏资源专区</h1>
+    <h1>本地自研游戏中心</h1>
 
-    <h2 class="sub-title">下载工具</h2>
-    <div class="item" onclick="openGame('')">
+    <div class="sub-title">工具专区</div>
+    <div class="item" onclick="showTip('全能下载器', '本地解析模块开发中，不接入任何外部站点')">
         <h3>全能资源下载器</h3>
-        <p>视频、音频、安装包直链解析下载，支持网盘直取</p>
+        <p>音视频、安装包直链解析，纯本地实现，无外网依赖</p>
     </div>
-    <div class="item" onclick="openGame('')">
-        <h3>APK专用下载器</h3>
-        <p>海外APK站点高速拉取，无需魔法缓存安装包</p>
-    </div>
-
-    <h2 class="sub-title">影视在线观看</h2>
-    <div class="item" onclick="openGame('')">
-        <h3>高清影视总站</h3>
-        <p>电影、剧集、动漫无广告高清在线播放</p>
-    </div>
-    <div class="item" onclick="openGame('')">
-        <h3>番剧专用频道</h3>
-        <p>全网动漫实时更新，原画倍速播放</p>
+    <div class="item" onclick="showTip('影视播放', '本地播放器框架搭建中，不跳转任何第三方网站')">
+        <h3>高清影视观看</h3>
+        <p>电影、番剧本地播放内核，纯前端解码，无外链资源</p>
     </div>
 
-    <h2 class="sub-title">游戏合集</h2>
-    <div class="item" onclick="openGame('https://captain-droid.com/zh/games/simulator/feelfpv-drone-fpv-simulator/')">
-        <h3>FeelFPV 穿越机模拟器</h3>
-        <p>触屏/键鼠自由切换，建模精细度+视距自定义，多语言，手机电脑通用，附带网盘安装包</p>
-    </div>
-    <div class="item" onclick="openGame('')">
-        <h3>FPV Freerider</h3>
-        <p>支持触屏、键盘、手柄三操控，画质建模、视距均可调，内置多国语言包</p>
-    </div>
-    <div class="item" onclick="openGame('')">
-        <h3>我的世界 手机模组整合</h3>
-        <p>手机触屏、电脑键鼠分开适配，建模、视距、语言均可手动设置</p>
-    </div>
-
-    <div class="item" onclick="openGame('https://dinogame.gg')">
-        <h3>谷歌小恐龙</h3>
-        <p>手机点击跳跃，电脑空格跳跃，加载后本地缓存离线玩</p>
-    </div>
-    <div class="item" onclick="openGame('https://sharaj.pages.dev/')">
-        <h3>Open Roads公路驾驶</h3>
-        <p>开局可选触屏摇杆/键盘方向键，5种视角+视距手动拉远拉近，建模三档可调，四季天气，五国语言，双端操控自选</p>
-    </div>
-    <div class="item" onclick="openGame('https://plantsvszombiesjs.github.io')">
-        <h3>植物大战僵尸</h3>
-        <p>触屏拖拽/鼠标拖拽，两种操控随意使用，多语言切换</p>
-    </div>
-    <div class="item" onclick="openGame('https://chrome.angrybirds.com')">
-        <h3>愤怒的小鸟</h3>
-        <p>拖拽操控，手机触屏、电脑鼠标通用自由选，官方原版支持双端缓存</p>
+    <div class="sub-title">3D自研游戏区</div>
+    <div class="game-grid">
+        <div class="item" onclick="switchGame('voxel')">
+            <h3>3D体素世界</h3>
+            <p>随机地形自由探索</p>
+        </div>
+        <div class="item" onclick="switchGame('shoot')">
+            <h3>3D方块射击</h3>
+            <p>瞄准悬浮靶计分</p>
+        </div>
+        <div class="item" onclick="switchGame('ball')">
+            <h3>3D平衡滚球</h3>
+            <p>控制小球不掉落</p>
+        </div>
     </div>
 
-    <div class="item" onclick="openGame('https://crazygames-poki.com/zh-cn/racing/city-car-driving-simulator')">
-        <h3>城市汽车驾驶模拟器</h3>
-        <p>开局自选触屏按键/WASD键鼠，固定5套视角、视距自由拉伸，建模精简/标准/精细三档，四季雨雪天气，多国语言切换</p>
-    </div>
-    <div class="item" onclick="openGame('https://freetoolonline.com/games/city-drive-3d.html')">
-        <h3>都市开放飙车3D</h3>
-        <p>5套固定视角，视距远近可调，建模精度手动切换，春夏秋冬+雨雪雾，多语言，支持下车步行</p>
-    </div>
-
-    <div class="item" onclick="openGame('https://drive-mad.co/18-wheeler-cargo-simulator/')">
-        <h3>百吨王·18轮半挂</h3>
-        <p>多款重型车头+可拆卸长挂车，5视角一键切换、视距自定义，三档建模，四季道路积雪场景，晴雨雾天气，触屏键盘双操控</p>
-    </div>
-    <div class="item" onclick="openGame('https://puzzio.io/game/truck-simulator-european-roads')">
-        <h3>欧洲城市卡车运输</h3>
-        <p>奔驰斯堪尼亚百吨重卡，5类镜头、视距缩放，精细车辆建模，四季城市风景，多语言，挂车倒车实操</p>
+    <div class="sub-title">2D经典游戏区</div>
+    <div class="game-grid">
+        <div class="item" onclick="switchGame('snake')">
+            <h3>经典贪吃蛇</h3>
+            <p>方向键/触屏滑动</p>
+        </div>
+        <div class="item" onclick="switchGame('pvz')">
+            <h3>植物大战僵尸</h3>
+            <p>简化塔防核心玩法</p>
+        </div>
+        <div class="item" onclick="switchGame('bird')">
+            <h3>愤怒的小鸟</h3>
+            <p>拖拽弹射物理效果</p>
+        </div>
     </div>
 
-    <div class="item" onclick="openGame('https://trucksimulatorweather.com')">
-        <h3>重卡天气货运模拟器</h3>
-        <p>百吨王长短半挂齐全，5视角+可调视距，三档建模，晴/暴雨/大雾/黑夜，多国语言，双端离线缓存</p>
-    </div>
-    <div class="item" onclick="openGame('https://citydriveweather.fun')">
-        <h3>城市全天候驾车</h3>
-        <p>全品类轿车大巴，5种镜头、视距自由调整，建模档位可选，雨雪阴天，手机电脑通用</p>
+    <div class="tip-bar" id="tipBar">请点击上方游戏开始游玩</div>
+    <div class="canvas-wrap">
+        <div class="score-panel" id="scorePanel">分数：0</div>
+        <canvas id="gameCanvas"></canvas>
     </div>
 
-    <div class="item" onclick="openGame('https://truck-season-sim.xyz')">
-        <h3>四季重卡货运模拟器</h3>
-        <p>半挂百吨全覆盖，5视角一键切换，视距远近自定义，三档车辆/场景建模，春夏秋冬+雨雪叠加，中英日韩西五国语言，触屏键鼠任选</p>
-    </div>
-    <div class="item" onclick="openGame('https://city-season-drive.online')">
-        <h3>都市四季公路驾驶</h3>
-        <p>跑车/家用/巴士全载具，5套固定镜头，视距拉放自由，高精度建模可选，四季植被变化，天气叠加，多语言切换操控</p>
-    </div>
-
-    <div class="item" onclick="openGame('https://rabiroshan.github.io/snake_game/')">
-        <h3>经典贪吃蛇</h3>
-        <p>触屏滑动、键盘方向键，随时都能切换，多语言</p>
-    </div>
-    <div class="item" onclick="openGame('https://tetris.com/play-tetris')">
-        <h3>俄罗斯方块</h3>
-        <p>触屏点击/键盘按键，多难度，多语言存档本地保存</p>
-    </div>
-    <div class="item" onclick="openGame('https://passer-by.com/pacman/')">
-        <h3>吃豆人</h3>
-        <p>触屏滑动、键盘操控，街机原版多语言复刻</p>
-    </div>
-    <div class="item" onclick="openGame('https://play2048.co/')">
-        <h3>2048数字合成</h3>
-        <p>手机滑动、电脑按键，自动记录分数，多语言</p>
-    </div>
-    <div class="item" onclick="openGame('https://bodhiprotocol.github.io/whack-a-mole/')">
-        <h3>打地鼠</h3>
-        <p>分儿童困难模式，无广告，多语言离线缓存</p>
-    </div>
-    <div class="item" onclick="openGame('http://martindrapeau.github.io/backbone-game-engine/super-mario-bros/index.html')">
-        <h3>超级马里奥</h3>
-        <p>虚拟触屏/电脑键盘手柄，开局自选语言</p>
-    </div>
-    <div class="item" onclick="openGame('https://minesweeper.online/zh/')">
-        <h3>经典扫雷</h3>
-        <p>触屏鼠标通用，多难度多语言</p>
-    </div>
-    <div class="item" onclick="openGame('https://goldminerjs.github.io')">
-        <h3>黄金矿工</h3>
-        <p>一键操控，手机电脑通用，自带多语言</p>
-    </div>
-
-    <a class="back" href="javascript:location.reload()">返回主页</a>
+    <a class="back-btn" href="javascript:location.reload()">刷新主页</a>
 
     <div class="bili-box">
         <a class="bili-link" target="_blank" href="https://space.bilibili.com/3546737830529382?spm_id_from=333.337.0.0">
-            <img class="bili-avatar" src="https://i1.hdslb.com/bfs/face/dfad9b020d793b4e0453a563dc292d140fce3e9e.jpg" alt="B站头像">
+            <svg class="bili-avatar" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <rect width="120" height="120" fill="#666666"/>
+                <circle cx="60" cy="50" r="35" fill="none" stroke="#bbbbbb" stroke-width="4"/>
+                <circle cx="46" cy="42" r="6" fill="#bbbbbb"/>
+                <circle cx="74" cy="42" r="6" fill="#bbbbbb"/>
+                <path d="M40 58 Q60 78 80 58" fill="none" stroke="#bbbbbb" stroke-width="4" stroke-linecap="round"/>
+            </svg>
             前往我的B站主页
         </a>
     </div>
 </div>
 
 <script>
-function openGame(link) {
-    if (!link) {
-        alert("该游戏地址暂未录入，敬请等待更新");
+// ========== 随机渐变背景 ==========
+const darkColors = [
+    'rgb(18, 18, 18)',
+    'rgb(15, 23, 42)',
+    'rgb(20, 30, 25)',
+    'rgb(30, 15, 40)',
+    'rgb(25, 20, 20)',
+    'rgb(10, 30, 35)',
+    'rgb(35, 20, 30)',
+];
+
+function randomBackground() {
+    const c1 = darkColors[Math.floor(Math.random() * darkColors.length)];
+    const c2 = darkColors[Math.floor(Math.random() * darkColors.length)];
+    if (c1 === c2) return randomBackground();
+    const angle = Math.floor(Math.random() * 360);
+    document.body.style.background = `linear-gradient(${angle}deg, ${c1}, ${c2})`;
+}
+randomBackground();
+setInterval(randomBackground, 10000);
+
+// ========== 通用工具 ==========
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const tipBar = document.getElementById('tipBar');
+const scorePanel = document.getElementById('scorePanel');
+let animationId = null;
+let dpr = window.devicePixelRatio || 1;
+
+function showTip(title, text){
+    alert(`【${title}】\n${text}`);
+}
+
+function resizeCanvas(){
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function switchGame(gameId){
+    if(animationId) cancelAnimationFrame(animationId);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    scorePanel.style.display = 'none';
+    
+    document.querySelectorAll('.item').forEach(el => el.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    switch(gameId){
+        case 'voxel': initVoxelGame(); break;
+        case 'shoot': initShootGame(); break;
+        case 'ball': initBallGame(); break;
+        case 'snake': initSnakeGame(); break;
+        case 'pvz': initPvzGame(); break;
+        case 'bird': initBirdGame(); break;
+    }
+}
+
+// ========== 自研3D数学库 ==========
+class Vec3 {
+    constructor(x=0, y=0, z=0){ this.x=x; this.y=y; this.z=z; }
+    add(v){ return new Vec3(this.x+v.x, this.y+v.y, this.z+v.z); }
+    sub(v){ return new Vec3(this.x-v.x, this.y-v.y, this.z-v.z); }
+    mul(s){ return new Vec3(this.x*s, this.y*s, this.z*s); }
+    dot(v){ return this.x*v.x + this.y*v.y + this.z*v.z; }
+    cross(v){
+        return new Vec3(
+            this.y*v.z - this.z*v.y,
+            this.z*v.x - this.x*v.z,
+            this.x*v.y - this.y*v.x
+        );
+    }
+    length(){ return Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z); }
+    normalize(){
+        const len = this.length();
+        return len === 0 ? new Vec3() : this.mul(1/len);
+    }
+}
+
+class Matrix4 {
+    constructor(){ this.m = new Float32Array(16); this.identity(); }
+    identity(){
+        this.m.fill(0);
+        this.m[0] = this.m[5] = this.m[10] = this.m[15] = 1;
+        return this;
+    }
+    multiply(b){
+        const a = this.m, bm = b.m, res = new Matrix4();
+        const r = res.m;
+        for(let i=0;i<4;i++){
+            for(let j=0;j<4;j++){
+                r[i*4+j] = a[i*4+0]*bm[0*4+j] + a[i*4+1]*bm[1*4+j] + a[i*4+2]*bm[2*4+j] + a[i*4+3]*bm[3*4+j];
+            }
+        }
+        return res;
+    }
+    perspective(fov, aspect, near, far){
+        const f = 1 / Math.tan(fov/2);
+        this.m.fill(0);
+        this.m[0] = f / aspect;
+        this.m[5] = f;
+        this.m[10] = (far+near)/(near-far);
+        this.m[11] = -1;
+        this.m[14] = (2*far*near)/(near-far);
+        return this;
+    }
+    lookAt(eye, target, up){
+        const z = eye.sub(target).normalize();
+        const x = up.cross(z).normalize();
+        const y = z.cross(x).normalize();
+        this.m.fill(0);
+        this.m[0] = x.x; this.m[1] = y.x; this.m[2] = z.x;
+        this.m[4] = x.y; this.m[5] = y.y; this.m[6] = z.y;
+        this.m[8] = x.z; this.m[9] = y.z; this.m[10] = z.z;
+        this.m[12] = -x.dot(eye);
+        this.m[13] = -y.dot(eye);
+        this.m[14] = -z.dot(eye);
+        this.m[15] = 1;
+        return this;
+    }
+    transformPoint(v){
+        const m = this.m;
+        const w = m[3]*v.x + m[7]*v.y + m[11]*v.z + m[15];
+        return new Vec3(
+            (m[0]*v.x + m[4]*v.y + m[8]*v.z + m[12]) / w,
+            (m[1]*v.x + m[5]*v.y + m[9]*v.z + m[13]) / w,
+            (m[2]*v.x + m[6]*v.y + m[10]*v.z + m[14]) / w
+        );
+    }
+}
+
+const lightDir = new Vec3(0.5, 1, 0.3).normalize();
+function hexToRgb(hex){
+    const r = parseInt(hex.slice(1,3), 16);
+    const g = parseInt(hex.slice(3,5), 16);
+    const b = parseInt(hex.slice(5,7), 16);
+    return { r, g, b };
+}
+
+function renderFaces(faces, camPos, w, h){
+    const proj = new Matrix4().perspective(Math.PI/3, w/h, 0.1, 200);
+    const view = new Matrix4().lookAt(camPos, new Vec3(0,2,0), new Vec3(0,1,0));
+    const vp = proj.multiply(view);
+
+    const drawList = [];
+    faces.forEach(face => {
+        const viewDir = face.center.sub(camPos).normalize();
+        if(face.normal.dot(viewDir) > 0) return;
+
+        const screenVerts = face.verts.map(v => {
+            const p = vp.transformPoint(v);
+            return {
+                x: (p.x + 1) * 0.5 * w,
+                y: (1 - p.y) * 0.5 * h,
+                z: p.z
+            };
+        });
+
+        const outScreen = screenVerts.every(v => v.x < 0 || v.x > w || v.y < 0 || v.y > h);
+        if(outScreen) return;
+
+        const brightness = Math.max(0.3, face.normal.dot(lightDir));
+        const baseColor = hexToRgb(face.color);
+        const litColor = `rgb(${Math.floor(baseColor.r*brightness)}, ${Math.floor(baseColor.g*brightness)}, ${Math.floor(baseColor.b*brightness)})`;
+        const depth = face.center.sub(camPos).length();
+
+        drawList.push({ verts: screenVerts, color: litColor, depth });
+    });
+
+    drawList.sort((a, b) => b.depth - a.depth);
+    drawList.forEach(face => {
+        ctx.beginPath();
+        ctx.moveTo(face.verts[0].x, face.verts[0].y);
+        for(let i=1; i<face.verts.length; i++){
+            ctx.lineTo(face.verts[i].x, face.verts[i].y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = face.color;
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    });
+}
+
+// ========== 1. 3D体素世界 ==========
+let voxelCamera = { yaw: 0, pitch: -0.3, distance: 12, target: new Vec3(0,2,0), speed: 0.15 };
+let voxelFaces = [];
+let voxelKeys = {};
+
+function initVoxelGame(){
+    tipBar.textContent = '电脑：WASD移动 / 鼠标拖拽转视角 / 滚轮缩放 | 手机：单指拖拽旋转 / 双指缩放';
+    generateVoxelTerrain();
+    bindVoxelControls();
+    voxelLoop();
+}
+
+function generateVoxelTerrain(){
+    const blocks = [];
+    const size = 12;
+    for(let x = -size; x <= size; x++){
+        for(let z = -size; z <= size; z++){
+            const height = Math.floor(
+                2 + Math.sin(x*0.3)*1.5 + Math.cos(z*0.35)*1.2 + Math.sin((x+z)*0.2)*0.8
+            );
+            for(let y = 0; y <= height; y++){
+                let type = y === height ? 'grass' : (y < height-1 ? 'stone' : 'dirt');
+                blocks.push({ pos: new Vec3(x, y, z), type });
+            }
+        }
+    }
+
+    const faceDefs = [
+        { verts: [[0,1,0],[1,1,0],[1,1,1],[0,1,1]], normal: new Vec3(0,1,0), name: 'top' },
+        { verts: [[0,0,1],[1,0,1],[1,0,0],[0,0,0]], normal: new Vec3(0,-1,0), name: 'bottom' },
+        { verts: [[0,0,0],[1,0,0],[1,1,0],[0,1,0]], normal: new Vec3(0,0,-1), name: 'front' },
+        { verts: [[1,0,1],[0,0,1],[0,1,1],[1,1,1]], normal: new Vec3(0,0,1), name: 'back' },
+        { verts: [[0,0,1],[0,0,0],[0,1,0],[0,1,1]], normal: new Vec3(-1,0,0), name: 'left' },
+        { verts: [[1,0,0],[1,0,1],[1,1,1],[1,1,0]], normal: new Vec3(1,0,0), name: 'right' }
+    ];
+    const blockSet = new Set(blocks.map(b => `${b.pos.x},${b.pos.y},${b.pos.z}`));
+    const colors = { grass: {top:'#4CAF50',side:'#8B5A2B',bottom:'#795548'}, dirt:'#795548', stone:'#757575' };
+    
+    voxelFaces = [];
+    blocks.forEach(block => {
+        const { pos, type } = block;
+        faceDefs.forEach(face => {
+            const nx = pos.x + face.normal.x;
+            const ny = pos.y + face.normal.y;
+            const nz = pos.z + face.normal.z;
+            if(blockSet.has(`${nx},${ny},${nz}`)) return;
+
+            const worldVerts = face.verts.map(v => new Vec3(pos.x+v[0], pos.y+v[1], pos.z+v[2]));
+            let color;
+            if(type === 'grass'){
+                color = face.name==='top' ? colors.grass.top : face.name==='bottom' ? colors.grass.bottom : colors.grass.side;
+            } else color = type==='dirt' ? colors.dirt : colors.stone;
+
+            voxelFaces.push({
+                verts: worldVerts,
+                normal: face.normal,
+                color,
+                center: pos.add(face.normal.mul(0.5))
+            });
+        });
+    });
+}
+
+function bindVoxelControls(){
+    let isDragging = false, lastX=0, lastY=0;
+    canvas.onmousedown = e => { isDragging=true; lastX=e.clientX; lastY=e.clientY; };
+    window.onmouseup = () => isDragging = false;
+    window.onmousemove = e => {
+        if(!isDragging) return;
+        voxelCamera.yaw += (e.clientX - lastX) * 0.005;
+        voxelCamera.pitch += (e.clientY - lastY) * 0.005;
+        voxelCamera.pitch = Math.max(-Math.PI/2+0.1, Math.min(Math.PI/2-0.1, voxelCamera.pitch));
+        lastX = e.clientX; lastY = e.clientY;
+    };
+    canvas.onwheel = e => {
+        e.preventDefault();
+        voxelCamera.distance += e.deltaY * 0.01;
+        voxelCamera.distance = Math.max(3, Math.min(30, voxelCamera.distance));
+    };
+    window.onkeydown = e => voxelKeys[e.key.toLowerCase()] = true;
+    window.onkeyup = e => voxelKeys[e.key.toLowerCase()] = false;
+
+    let lastTouchDist = 0;
+    canvas.ontouchstart = e => {
+        e.preventDefault();
+        if(e.touches.length===1){ isDragging=true; lastX=e.touches[0].clientX; lastY=e.touches[0].clientY; }
+        else if(e.touches.length===2){
+            const dx = e.touches[0].clientX - e.touches[1].clientX;
+            const dy = e.touches[0].clientY - e.touches[1].clientY;
+            lastTouchDist = Math.sqrt(dx*dx+dy*dy);
+        }
+    };
+    canvas.ontouchmove = e => {
+        e.preventDefault();
+        if(e.touches.length===1 && isDragging){
+            voxelCamera.yaw += (e.touches[0].clientX - lastX) * 0.005;
+            voxelCamera.pitch += (e.touches[0].clientY - lastY) * 0.005;
+            voxelCamera.pitch = Math.max(-Math.PI/2+0.1, Math.min(Math.PI/2-0.1, voxelCamera.pitch));
+            lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+        } else if(e.touches.length===2){
+            const dx = e.touches[0].clientX - e.touches[1].clientX;
+            const dy = e.touches[0].clientY - e.touches[1].clientY;
+            const dist = Math.sqrt(dx*dx+dy*dy);
+            voxelCamera.distance *= lastTouchDist / dist;
+            voxelCamera.distance = Math.max(3, Math.min(30, voxelCamera.distance));
+            lastTouchDist = dist;
+        }
+    };
+    canvas.ontouchend = () => isDragging = false;
+}
+
+function voxelLoop(){
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    
+    const grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, '#87CEEB');
+    grad.addColorStop(1, '#E0F7FA');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+
+    const forward = new Vec3(Math.sin(voxelCamera.yaw), 0, Math.cos(voxelCamera.yaw));
+    const right = new Vec3(Math.cos(voxelCamera.yaw), 0, -Math.sin(voxelCamera.yaw));
+    if(voxelKeys['w']) voxelCamera.target = voxelCamera.target.add(forward.mul(voxelCamera.speed));
+    if(voxelKeys['s']) voxelCamera.target = voxelCamera.target.sub(forward.mul(voxelCamera.speed));
+    if(voxelKeys['a']) voxelCamera.target = voxelCamera.target.sub(right.mul(voxelCamera.speed));
+    if(voxelKeys['d']) voxelCamera.target = voxelCamera.target.add(right.mul(voxelCamera.speed));
+
+    const camX = voxelCamera.target.x + Math.sin(voxelCamera.yaw)*Math.cos(voxelCamera.pitch)*voxelCamera.distance;
+    const camY = voxelCamera.target.y + Math.sin(-voxelCamera.pitch)*voxelCamera.distance;
+    const camZ = voxelCamera.target.z + Math.cos(voxelCamera.yaw)*Math.cos(voxelCamera.pitch)*voxelCamera.distance;
+    const camPos = new Vec3(camX, camY, camZ);
+
+    renderFaces(voxelFaces, camPos, w, h);
+    animationId = requestAnimationFrame(voxelLoop);
+}
+
+// ========== 2. 3D方块射击 ==========
+let shootTargets = [];
+let shootScore = 0;
+let shootCamera = { yaw: 0, pitch: 0, distance: 15 };
+
+function initShootGame(){
+    tipBar.textContent = '鼠标拖拽瞄准 / 点击射击 | 手机：拖拽瞄准，点击屏幕射击';
+    scorePanel.style.display = 'block';
+    shootScore = 0;
+    updateScore();
+    generateTargets();
+    bindShootControls();
+    shootLoop();
+}
+
+function generateTargets(){
+    shootTargets = [];
+    for(let i=0; i<8; i++){
+        shootTargets.push({
+            pos: new Vec3(
+                (Math.random()-0.5)*10,
+                Math.random()*5 + 1,
+                -Math.random()*8 - 3
+            ),
+            size: 0.8,
+            color: '#ff5252'
+        });
+    }
+}
+
+function buildCubeFaces(pos, size, color){
+    const s = size/2;
+    const faceDefs = [
+        { verts: [[-s,s,-s],[s,s,-s],[s,s,s],[-s,s,s]], normal: new Vec3(0,1,0) },
+        { verts: [[-s,-s,s],[s,-s,s],[s,-s,-s],[-s,-s,-s]], normal: new Vec3(0,-1,0) },
+        { verts: [[-s,-s,-s],[s,-s,-s],[s,s,-s],[-s,s,-s]], normal: new Vec3(0,0,-1) },
+        { verts: [[s,-s,s],[-s,-s,s],[-s,s,s],[s,s,s]], normal: new Vec3(0,0,1) },
+        { verts: [[-s,-s,s],[-s,-s,-s],[-s,s,-s],[-s,s,s]], normal: new Vec3(-1,0,0) },
+        { verts: [[s,-s,-s],[s,-s,s],[s,s,s],[s,s,-s]], normal: new Vec3(1,0,0) }
+    ];
+    return faceDefs.map(f => ({
+        verts: f.verts.map(v => new Vec3(pos.x+v[0], pos.y+v[1], pos.z+v[2])),
+        normal: f.normal,
+        color,
+        center: pos.add(f.normal.mul(s))
+    }));
+}
+
+function bindShootControls(){
+    let isDragging = false, lastX=0, lastY=0;
+    canvas.onmousedown = e => { isDragging=true; lastX=e.clientX; lastY=e.clientY; };
+    window.onmouseup = e => {
+        if(!isDragging) return;
+        isDragging = false;
+        if(Math.abs(e.clientX-lastX) < 5 && Math.abs(e.clientY-lastY) < 5){
+            shoot(e.clientX, e.clientY);
+        }
+    };
+    window.onmousemove = e => {
+        if(!isDragging) return;
+        shootCamera.yaw += (e.clientX - lastX) * 0.005;
+        shootCamera.pitch += (e.clientY - lastY) * 0.005;
+        shootCamera.pitch = Math.max(-Math.PI/2+0.1, Math.min(Math.PI/2-0.1, shootCamera.pitch));
+        lastX = e.clientX; lastY = e.clientY;
+    };
+
+    canvas.ontouchstart = e => {
+        e.preventDefault();
+        isDragging = true;
+        lastX = e.touches[0].clientX;
+        lastY = e.touches[0].clientY;
+    };
+    canvas.ontouchend = e => {
+        e.preventDefault();
+        const dx = e.changedTouches[0].clientX - lastX;
+        const dy = e.changedTouches[0].clientY - lastY;
+        if(Math.abs(dx) < 5 && Math.abs(dy) < 5){
+            shoot(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+        }
+        isDragging = false;
+    };
+    canvas.ontouchmove = e => {
+        e.preventDefault();
+        if(!isDragging) return;
+        shootCamera.yaw += (e.touches[0].clientX - lastX) * 0.005;
+        shootCamera.pitch += (e.touches[0].clientY - lastY) * 0.005;
+        shootCamera.pitch = Math.max(-Math.PI/2+0.1, Math.min(Math.PI/2-0.1, shootCamera.pitch));
+        lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+    };
+}
+
+function shoot(screenX, screenY){
+    const rect = canvas.getBoundingClientRect();
+    const x = screenX - rect.left;
+    const y = screenY - rect.top;
+    
+    for(let i = shootTargets.length-1; i >= 0; i--){
+        const t = shootTargets[i];
+        const proj = new Matrix4().perspective(Math.PI/3, canvas.clientWidth/canvas.clientHeight, 0.1, 200);
+        const camPos = new Vec3(
+            Math.sin(shootCamera.yaw)*Math.cos(shootCamera.pitch)*shootCamera.distance,
+            2 + Math.sin(-shootCamera.pitch)*shootCamera.distance,
+            Math.cos(shootCamera.yaw)*Math.cos(shootCamera.pitch)*shootCamera.distance
+        );
+        const view = new Matrix4().lookAt(camPos, new Vec3(0,2,0), new Vec3(0,1,0));
+        const vp = proj.multiply(view);
+        const p = vp.transformPoint(t.pos);
+        const sx = (p.x + 1) * 0.5 * canvas.clientWidth;
+        const sy = (1 - p.y) * 0.5 * canvas.clientHeight;
+        
+        const dist = Math.sqrt((x-sx)**2 + (y-sy)**2);
+        if(dist < 30){
+            shootTargets.splice(i, 1);
+            shootScore += 10;
+            updateScore();
+            if(shootTargets.length === 0){
+                setTimeout(() => {
+                    alert(`恭喜通关！得分：${shootScore}`);
+                    generateTargets();
+                }, 100);
+            }
+            return;
+        }
+    }
+}
+
+function updateScore(){
+    scorePanel.textContent = `分数：${shootScore}`;
+}
+
+function shootLoop(){
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.fillStyle = '#1a237e';
+    ctx.fillRect(0, 0, w, h);
+
+    const camPos = new Vec3(
+        Math.sin(shootCamera.yaw)*Math.cos(shootCamera.pitch)*shootCamera.distance,
+        2 + Math.sin(-shootCamera.pitch)*shootCamera.distance,
+        Math.cos(shootCamera.yaw)*Math.cos(shootCamera.pitch)*shootCamera.distance
+    );
+
+    let allFaces = [];
+    shootTargets.forEach(t => {
+        allFaces = allFaces.concat(buildCubeFaces(t.pos, t.size, t.color));
+    });
+    allFaces = allFaces.concat(buildCubeFaces(new Vec3(0,-0.5,0), 20, '#4caf50'));
+
+    renderFaces(allFaces, camPos, w, h);
+
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(w/2, h/2, 10, 0, Math.PI*2);
+    ctx.moveTo(w/2-15, h/2);
+    ctx.lineTo(w/2+15, h/2);
+    ctx.moveTo(w/2, h/2-15);
+    ctx.lineTo(w/2, h/2+15);
+    ctx.stroke();
+
+    animationId = requestAnimationFrame(shootLoop);
+}
+
+// ========== 3. 3D平衡滚球 ==========
+let ballPos = new Vec3(0, 1, 0);
+let ballVel = new Vec3(0, 0, 0);
+let ballRot = { x: 0, z: 0 };
+
+function initBallGame(){
+    tipBar.textContent = '键盘方向键控制平台倾斜，别让小球掉下去';
+    ballPos = new Vec3(0, 1, 0);
+    ballVel = new Vec3(0, 0, 0);
+    ballRot = { x: 0, z: 0 };
+    bindBallControls();
+    ballLoop();
+}
+
+function bindBallControls(){
+    window.onkeydown = e => {
+        if(e.key === 'ArrowLeft') ballRot.z += 0.05;
+        if(e.key === 'ArrowRight') ballRot.z -= 0.05;
+        if(e.key === 'ArrowUp') ballRot.x -= 0.05;
+        if(e.key === 'ArrowDown') ballRot.x += 0.05;
+        ballRot.x = Math.max(-0.3, Math.min(0.3, ballRot.x));
+        ballRot.z = Math.max(-0.3, Math.min(0.3, ballRot.z));
+    };
+}
+
+function ballLoop(){
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.fillStyle = '#e3f2fd';
+    ctx.fillRect(0, 0, w, h);
+
+    ballVel.x += ballRot.z * 0.02;
+    ballVel.z += ballRot.x * 0.02;
+    ballVel = ballVel.mul(0.98);
+    ballPos = ballPos.add(ballVel);
+
+    const platformSize = 5;
+    if(Math.abs(ballPos.x) > platformSize || Math.abs(ballPos.z) > platformSize){
+        ballPos = new Vec3(0, 1, 0);
+        ballVel = new Vec3(0, 0, 0);
+    }
+
+    const camPos = new Vec3(0, 8, 10);
+    let allFaces = [];
+    
+    allFaces = allFaces.concat(buildCubeFaces(new Vec3(0,0,0), 10, '#2196f3'));
+    allFaces = allFaces.concat(buildCubeFaces(ballPos, 0.6, '#ff9800'));
+
+    renderFaces(allFaces, camPos, w, h);
+    animationId = requestAnimationFrame(ballLoop);
+}
+
+// ========== 4. 经典贪吃蛇 ==========
+let snake = [];
+let snakeDir = { x: 1, y: 0 };
+let snakeFood = {};
+let snakeScore = 0;
+const gridSize = 20;
+
+function initSnakeGame(){
+    tipBar.textContent = '方向键 / 触屏滑动控制方向，吃到食物变长';
+    scorePanel.style.display = 'block';
+    snake = [{x:10, y:10}, {x:9, y:10}, {x:8, y:10}];
+    snakeDir = {x:1, y:0};
+    snakeScore = 0;
+    updateScore();
+    spawnFood();
+    bindSnakeControls();
+    
+    let lastTime = 0;
+    function loop(time){
+        if(time - lastTime > 120){
+            updateSnake();
+            lastTime = time;
+        }
+        drawSnake();
+        animationId = requestAnimationFrame(loop);
+    }
+    animationId = requestAnimationFrame(loop);
+}
+
+function spawnFood(){
+    const cols = Math.floor(canvas.clientWidth / gridSize);
+    const rows = Math.floor(canvas.clientHeight / gridSize);
+    snakeFood = {
+        x: Math.floor(Math.random() * cols),
+        y: Math.floor(Math.random() * rows)
+    };
+}
+
+function bindSnakeControls(){
+    window.onkeydown = e => {
+        if(e.key === 'ArrowUp' && snakeDir.y !== 1) snakeDir = {x:0, y:-1};
+        if(e.key === 'ArrowDown' && snakeDir.y !== -1) snakeDir = {x:0, y:1};
+        if(e.key === 'ArrowLeft' && snakeDir.x !== 1) snakeDir = {x:-1, y:0};
+        if(e.key === 'ArrowRight' && snakeDir.x !== -1) snakeDir = {x:1, y:0};
+    };
+
+    let touchStartX = 0, touchStartY = 0;
+    canvas.ontouchstart = e => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    };
+    canvas.ontouchend = e => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if(Math.abs(dx) > Math.abs(dy)){
+            if(dx > 0 && snakeDir.x !== -1) snakeDir = {x:1, y:0};
+            else if(dx < 0 && snakeDir.x !== 1) snakeDir = {x:-1, y:0};
+        } else {
+            if(dy > 0 && snakeDir.y !== -1) snakeDir = {x:0, y:1};
+            else if(dy < 0 && snakeDir.y !== 1) snakeDir = {x:0, y:-1};
+        }
+    };
+}
+
+function updateSnake(){
+    const head = { x: snake[0].x + snakeDir.x, y: snake[0].y + snakeDir.y };
+    const cols = Math.floor(canvas.clientWidth / gridSize);
+    const rows = Math.floor(canvas.clientHeight / gridSize);
+
+    if(head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows){
+        alert(`游戏结束！得分：${snakeScore}`);
+        snake = [{x:10, y:10}, {x:9, y:10}, {x:8, y:10}];
+        snakeDir = {x:1, y:0};
+        snakeScore = 0;
+        updateScore();
+        spawnFood();
         return;
     }
-    window.open(link, "_blank");
+
+    if(snake.some(s => s.x === head.x && s.y === head.y)){
+        alert(`游戏结束！得分：${snakeScore}`);
+        snake = [{x:10, y:10}, {x:9, y:10}, {x:8, y:10}];
+        snakeDir = {x:1, y:0};
+        snakeScore = 0;
+        updateScore();
+        spawnFood();
+        return;
+    }
+
+    snake.unshift(head);
+    if(head.x === snakeFood.x && head.y === snakeFood.y){
+        snakeScore += 10;
+        updateScore();
+        spawnFood();
+    } else {
+        snake.pop();
+    }
+}
+
+function drawSnake(){
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.fillStyle = '#121212';
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.fillStyle = '#ff5252';
+    ctx.fillRect(snakeFood.x*gridSize+2, snakeFood.y*gridSize+2, gridSize-4, gridSize-4);
+
+    ctx.fillStyle = '#4caf50';
+    snake.forEach((s, i) => {
+        if(i === 0) ctx.fillStyle = '#2e7d32';
+        ctx.fillRect(s.x*gridSize+1, s.y*gridSize+1, gridSize-2, gridSize-2);
+    });
+}
+
+// ========== 5. 植物大战僵尸简化版 ==========
+let pvzPeas = [];
+let pvzZombies = [];
+let pvzPlants = [];
+let pvzScore = 0;
+let pvzLives = 3;
+let pvzInterval = null;
+
+function initPvzGame(){
+    tipBar.textContent = '点击草地格子种豌豆射手，消灭入侵的僵尸';
+    scorePanel.style.display = 'block';
+    pvzScore = 0;
+    pvzLives = 3;
+    pvzPeas = [];
+    pvzZombies = [];
+    pvzPlants = [];
+    updatePvzScore();
+    bindPvzControls();
+    
+    if(pvzInterval) clearInterval(pvzInterval);
+    pvzInterval = setInterval(() => {
+        pvzZombies.push({
+            x: canvas.clientWidth,
+            y: 50 + Math.floor(Math.random()*5) * 80,
+            hp: 3,
+            speed: 0.8
+        });
+    }, 2000);
+
+    pvzLoop();
+}
+
+function updatePvzScore(){
+    scorePanel.textContent = `分数：${pvzScore} | 生命：${pvzLives}`;
+}
+
+function bindPvzControls(){
+    canvas.onclick = e => {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const gridX = Math.floor(x / 80);
+        const gridY = Math.floor((y - 30) / 80);
+        
+        if(gridY >= 0 && gridY < 5 && gridX >= 0 && gridX < 8){
+            const exists = pvzPlants.some(p => p.gridX === gridX && p.gridY === gridY);
+            if(!exists){
+                pvzPlants.push({ gridX, gridY, x: gridX*80+40, y: 30 + gridY*80+40, cooldown: 0 });
+            }
+        }
+    };
+}
+
+function pvzLoop(){
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.fillStyle = '#8bc34a';
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.strokeStyle = '#689f38';
+    ctx.lineWidth = 2;
+    for(let i=0; i<=8; i++){
+        ctx.beginPath();
+        ctx.moveTo(i*80, 30);
+        ctx.lineTo(i*80, 30+5*80);
+        ctx.stroke();
+    }
+    for(let i=0; i<=5; i++){
+        ctx.beginPath();
+        ctx.moveTo(0, 30+i*80);
+        ctx.lineTo(8*80, 30+i*80);
+        ctx.stroke();
+    }
+
+    pvzPlants.forEach(p => {
+        ctx.fillStyle = '#388e3c';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 25, 0, Math.PI*2);
+        ctx.fill();
+        ctx.fillStyle = '#1b5e20';
+        ctx.fillRect(p.x+10, p.y-5, 20, 10);
+
+        p.cooldown--;
+        if(p.cooldown <= 0){
+            pvzPeas.push({ x: p.x+20, y: p.y, speed: 5 });
+            p.cooldown = 60;
+        }
+    });
+
+    ctx.fillStyle = '#ffeb3b';
+    for(let i = pvzPeas.length-1; i >= 0; i--){
+        const pea = pvzPeas[i];
+        pea.x += pea.speed;
+        ctx.beginPath();
+        ctx.arc(pea.x, pea.y, 6, 0, Math.PI*2);
+        ctx.fill();
+
+        if(pea.x > w) pvzPeas.splice(i, 1);
+    }
+
+    for(let i = pvzZombies.length-1; i >= 0; i--){
+        const z = pvzZombies[i];
+        z.x -= z.speed;
+        
+        ctx.fillStyle = '#795548';
+        ctx.fillRect(z.x-15, z.y-25, 30, 50);
+        ctx.fillStyle = '#d7ccc8';
+        ctx.beginPath();
+        ctx.arc(z.x, z.y-30, 15, 0, Math.PI*2);
+        ctx.fill();
+
+        for(let j = pvzPeas.length-1; j >= 0; j--){
+            const pea = pvzPeas[j];
+            if(Math.abs(pea.x - z.x) < 20 && Math.abs(pea.y - z.y) < 25){
+                z.hp--;
+                pvzPeas.splice(j, 1);
+                if(z.hp <= 0){
+                    pvzZombies.splice(i, 1);
+                    pvzScore += 10;
+                    updatePvzScore();
+                }
+                break;
+            }
+        }
+
+        if(z.x < 0){
+            pvzZombies.splice(i, 1);
+            pvzLives--;
+            updatePvzScore();
+            if(pvzLives <= 0){
+                alert(`游戏结束！得分：${pvzScore}`);
+                cancelAnimationFrame(animationId);
+                clearInterval(pvzInterval);
+                return;
+            }
+        }
+    }
+
+    animationId = requestAnimationFrame(pvzLoop);
+}
+
+// ========== 6. 愤怒的小鸟简化版 ==========
+let birdPos = { x: 100, y: 300 };
+let birdVel = { x: 0, y: 0 };
+let birdState = 'ready';
+let pigPos = { x: 600, y: 350 };
+let birdScore = 0;
+let dragStart = null;
+
+function initBirdGame(){
+    tipBar.textContent = '拖拽小鸟向后拉，松开弹射，砸中绿色小猪得分';
+    scorePanel.style.display = 'block';
+    birdScore = 0;
+    resetBird();
+    bindBirdControls();
+    birdLoop();
+}
+
+function resetBird(){
+    birdPos = { x: 100, y: 300 };
+    birdVel = { x: 0, y: 0 };
+    birdState = 'ready';
+    pigPos = { x: 500 + Math.random()*150, y: 350 };
+    updateScore();
+}
+
+function bindBirdControls(){
+    canvas.onmousedown = e => {
+        if(birdState !== 'ready') return;
+        const rect = canvas.getBoundingClientRect();
+        dragStart = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    };
+    window.onmousemove = e => {
+        if(!dragStart || birdState !== 'ready') return;
+        const rect = canvas.getBoundingClientRect();
+        birdPos = {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+        };
+    };
+    window.onmouseup = () => {
+        if(!dragStart) return;
+        dragStart = null;
+        if(birdState === 'ready'){
+            birdVel = {
+                x: (100 - birdPos.x) * 0.15,
+                y: (300 - birdPos.y) * 0.15
+            };
+            birdState = 'flying';
+        }
+    };
+
+    canvas.ontouchstart = e => {
+        if(birdState !== 'ready') return;
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        dragStart = { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
+    };
+    canvas.ontouchmove = e => {
+        if(!dragStart || birdState !== 'ready') return;
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        birdPos = {
+            x: e.touches[0].clientX - rect.left,
+            y: e.touches[0].clientY - rect.top
+        };
+    };
+    canvas.ontouchend = e => {
+        if(!dragStart) return;
+        dragStart = null;
+        if(birdState === 'ready'){
+            birdVel = {
+                x: (100 - birdPos.x) * 0.15,
+                y: (300 - birdPos.y) * 0.15
+            };
+            birdState = 'flying';
+        }
+    };
+}
+
+function birdLoop(){
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    
+    const grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, '#81d4fa');
+    grad.addColorStop(1, '#b3e5fc');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.fillStyle = '#8bc34a';
+    ctx.fillRect(0, 380, w, h-380);
+
+    ctx.strokeStyle = '#795548';
+    ctx.lineWidth = 8;
+    ctx.beginPath();
+    ctx.moveTo(100, 380);
+    ctx.lineTo(100, 280);
+    ctx.stroke();
+
+    ctx.fillStyle = '#4caf50';
+    ctx.beginPath();
+    ctx.arc(pigPos.x, pigPos.y, 25, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(pigPos.x-8, pigPos.y-5, 6, 0, Math.PI*2);
+    ctx.arc(pigPos.x+8, pigPos.y-5, 6, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.arc(pigPos.x-8, pigPos.y-5, 3, 0, Math.PI*2);
+    ctx.arc(pigPos.x+8, pigPos.y-5, 3, 0, Math.PI*2);
+    ctx.fill();
+
+    if(birdState === 'flying'){
+        birdVel.y += 0.3;
+        birdPos.x += birdVel.x;
+        birdPos.y += birdVel.y;
+
+        const dist = Math.sqrt((birdPos.x - pigPos.x)**2 + (birdPos.y - pigPos.y)**2);
+        if(dist < 40){
+            birdScore += 10;
+            updateScore();
+            birdState = 'landed';
+            setTimeout(resetBird, 1000);
+        }
+
+        if(birdPos.y > 370 || birdPos.x > w || birdPos.x < 0){
+            birdState = 'landed';
+            setTimeout(resetBird, 1000);
+        }
+    }
+
+    ctx.fillStyle = '#f44336';
+    ctx.beginPath();
+    ctx.arc(birdPos.x, birdPos.y, 20, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(birdPos.x+5, birdPos.y-5, 6, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.arc(birdPos.x+5, birdPos.y-5, 3, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#ff9800';
+    ctx.beginPath();
+    ctx.moveTo(birdPos.x+15, birdPos.y);
+    ctx.lineTo(birdPos.x+25, birdPos.y-3);
+    ctx.lineTo(birdPos.x+25, birdPos.y+3);
+    ctx.closePath();
+    ctx.fill();
+
+    if(birdState === 'ready' && dragStart){
+        ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+        ctx.setLineDash([5,5]);
+        ctx.beginPath();
+        ctx.moveTo(birdPos.x, birdPos.y);
+        ctx.lineTo(100, 300);
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    animationId = requestAnimationFrame(birdLoop);
 }
 </script>
 </body>
