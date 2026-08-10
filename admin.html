@@ -57,12 +57,13 @@
 const adminUser = "1145149527";
 let adminPwd = "qqqhhhppp";
 const securityAnswer = "114514awa";
-
-let webSet = JSON.parse(localStorage.getItem("webSet")) || {title:"我进不去你的空间",desc:"影视｜游戏｜高速下载 资源合集主页",bili:"",cards:[]};
+//强制初始化配置，覆盖错乱缓存
+let webSet = {title:"我进不去你的空间",desc:"影视｜游戏｜高速下载 资源合集主页",bili:"",cards:[]};
+localStorage.setItem("webSet",JSON.stringify(webSet));
 
 function loginCheck(){
-    let u = document.getElementById("user").value;
-    let p = document.getElementById("pwd").value;
+    let u = document.getElementById("user").value.trim();
+    let p = document.getElementById("pwd").value.trim();
     if(u === adminUser && p === adminPwd){
         document.getElementById("loginBox").style.display = "none";
         document.getElementById("managePanel").style.display = "block";

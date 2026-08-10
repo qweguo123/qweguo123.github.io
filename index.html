@@ -38,11 +38,6 @@
         .desc {
             color: #aaa;
         }
-        .visitor-tag{
-            font-size:13px;
-            color:#888;
-            margin-bottom:8px;
-        }
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -86,22 +81,30 @@
         .slow-card{border-color:#a855f7;}
         .slow-card:hover{border-color:#a855f7;}
 
+        /* 修复按钮层级+强制可点击 */
         .admin-entrance{
             position: fixed;
             right: 8px;
             bottom: 8px;
-            background: transparent;
+            background: rgba(255,255,255,0.15);
             border: none;
-            color: #222632;
-            font-size: 10px;
+            color: #ffffff;
+            font-size: 22px;
+            width:32px;
+            height:32px;
+            border-radius:50%;
             cursor: pointer;
+            z-index:9999;
+            pointer-events: auto !important;
+        }
+        .admin-entrance:active{
+            background:#409eff;
         }
     </style>
 </head>
 <body>
     <header>
         <img class="avatar" src="此处粘贴你的B站头像链接" alt="头像">
-        <div class="visitor-tag">游客浏览模式 · 仅可访问链接，无修改权限</div>
         <h1 id="siteTitle">我进不去你的空间</h1>
         <p class="desc" id="siteDesc">影视｜游戏｜高速下载 资源合集主页</p>
     </header>
@@ -127,7 +130,7 @@
             <h3>西瓜视频</h3>
             <p>大量完整版影视剧免费看</p>
         </div>
-        <div class="card game-card" onclick="openUrl('#game')">
+        <div class="card game-card" onclick="openUrl('game.html')">
             <h3>游戏资源专区</h3>
             <p>我的世界、FPV模拟器下载集合</p>
         </div>
@@ -149,16 +152,21 @@
     <footer></footer>
 
 <script>
+// 等待页面全部加载完毕再绑定点击
+document.addEventListener('DOMContentLoaded',function(){
 let clickCount = 0;
 const targetNum = 10;
 const btn = document.getElementById("clickBtn");
 btn.addEventListener("click",()=>{
     clickCount++;
+    // 点击计数弹窗提示
+    alert(`已点击${clickCount}/10次，满10次跳转后台`);
     if(clickCount >= targetNum){
         window.location.href = "admin.html";
         clickCount = 0;
     }
 });
+})
 
 const bgList = [
     "linear-gradient(135deg, #0f172a, #1e293b)",
@@ -186,11 +194,7 @@ if(Array.isArray(set.cards)){
     })
 }
 
-if(url === "#game"){
-    window.open("game.html","_blank");
-    return;
-}
-
+function openUrl(url){
     if(url && url !== "") window.open(url,"_blank");
 }
 </script>
